@@ -5,6 +5,9 @@
 Escriba el codigo que ejecute la accion solicitada en cada pregunta.
 """
 
+import pandas
+import glob
+import os
 
 def pregunta_01():
     """
@@ -71,3 +74,56 @@ def pregunta_01():
 
 
     """
+
+    # Lo haremos dos veces, uno para train y otro para test
+
+    tipo_archivo = ["train", "test"]
+    tipo_sentimiento = ["negative", "neutral", "positive"]
+
+    # Creamos la carpeta
+    directorio = "./files/output"
+    if not os.path.exists(directorio):
+        os.makedirs(directorio)
+    
+    aux = 0
+
+    for tipo in tipo_archivo:
+
+        # Creamos las columnas
+        columnas = ["phrase", "sentiment"]
+
+        # Creamos el dataframe
+        data_frame = pandas.DataFrame(columns =  columnas)
+
+        # Creamos la lista
+        lista_dataframes = []
+
+        # Cargamos los datos
+        for sentimiento in tipo_sentimiento:
+
+            patron_sentimiento = "files/input/{0}/{1}/*.txt".format(tipo, sentimiento)
+
+            # Cargamos los archivos
+            archivos = glob.glob(patron_sentimiento)
+
+            # Recorremos cada archivo y lo añadimos a la lista
+            for archivo in archivos:
+
+                # Cargamos la frase
+                frase = open(archivo, "r").read()
+
+                # Creamos un dataframe temporal
+                df = pandas.DataFrame({"phrase": [frase], "sentiment": [sentimiento]})
+
+                # Añadimos el sentimiento
+                lista_dataframes.append(df)
+        
+        # Una vez tenemos todas las frases de un tipo: train o test
+        # Guardamso todo en el dataframe
+        data_frame = pandas.concat(lista_dataframes, ignore_index = True)
+
+        # Guardamos el dataframe en formato csv
+        direccion_guardado = "./files/output/{0}_dataset.csv".format(tipo)
+        data_frame.to_csv(direccion_guardado)
+
+    return 0
