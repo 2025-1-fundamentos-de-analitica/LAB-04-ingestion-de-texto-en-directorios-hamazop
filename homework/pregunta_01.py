@@ -124,6 +124,8 @@ def pregunta_01():
 
         # Guardamos el dataframe en formato csv
         direccion_guardado = "./files/output/{0}_dataset.csv".format(tipo)
-        data_frame.to_csv(direccion_guardado)
+        data_frame.to_csv(direccion_guardado, index = False)
 
     return 0
+
+pregunta_01()
