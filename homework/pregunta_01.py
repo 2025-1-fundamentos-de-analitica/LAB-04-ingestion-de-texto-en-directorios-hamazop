@@ -113,7 +113,7 @@ def pregunta_01():
                 frase = open(archivo, "r").read()
 
                 # Creamos un dataframe temporal
-                df = pandas.DataFrame({"phrase": [frase], "sentiment": [sentimiento]})
+                df = pandas.DataFrame({"phrase": [frase], "target": [sentimiento]})
 
                 # Añadimos el sentimiento
                 lista_dataframes.append(df)
@@ -124,7 +124,7 @@ def pregunta_01():
 
         # Guardamos el dataframe en formato csv
         direccion_guardado = "./files/output/{0}_dataset.csv".format(tipo)
-        data_frame.to_csv(direccion_guardado, index = False)
+        data_frame.to_csv(direccion_guardado)
 
     return 0
 
